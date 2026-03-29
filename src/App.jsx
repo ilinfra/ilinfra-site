@@ -164,8 +164,14 @@ const SITE_CONTENT = {
 };
 
 // ==========================================
-// ⬇️ UI 架构渲染引擎 ⬇️
+// ⬇️ UI 子组件 ⬇️
 // ==========================================
+
+const WhatsAppIcon = () => (
+  <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+    <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564c.173.087.289.129.332.202.043.073.043.423-.101.827z"/><path d="M12 0c-6.627 0-12 5.373-12 12 0 2.056.528 3.987 1.458 5.672l-1.458 4.328 4.439-1.428c1.62.866 3.475 1.428 5.561 1.428 6.627 0 12-5.373 12-12s-5.373-12-12-12zm0 21.996c-1.797 0-3.488-.466-4.966-1.275l-3.088.992 1.018-3.023c-.886-1.558-1.396-3.376-1.396-5.305 0-5.514 4.486-10 10-10s10 4.486 10 10-4.486 10-10 10z"/>
+  </svg>
+);
 
 const DynamicIcon = ({ name }) => {
   const icons = { Server, Globe, LifeBuoy, RefreshCw, Shield };
@@ -173,9 +179,21 @@ const DynamicIcon = ({ name }) => {
   return <Component className="w-8 h-8 text-[#00E5FF]" />;
 };
 
+// ==========================================
+// ⬇️ 主应用组件 ⬇️
+// ==========================================
+
 export default function App() {
   const [lang, setLang] = useState('en');
   const d = SITE_CONTENT[lang];
+
+  // 安全获取 WhatsApp 号码的逻辑
+  const getWaLink = () => {
+    if (!d?.footer?.phone) return "#";
+    const rawNum = d.footer.phone.split('/')[0] || "";
+    const cleanNum = rawNum.replace(/\D/g, '');
+    return `https://wa.me/${cleanNum}`;
+  };
 
   return (
     <div className="bg-[#020617] text-slate-300 min-h-screen font-sans selection:bg-[#00E5FF] selection:text-[#020617] scroll-smooth">
@@ -191,12 +209,13 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
           
           {/* --- 分离式 Logo 区域 --- */}
-          <div className="flex items-center gap-4 cursor-pointer group" onClick={() => window.scrollTo(0,0)}>
-            {/* 只显示图标部分 */}
+          <div className="flex items-center gap-4 cursor-pointer group" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
+            {/* 只显示图标部分 (请确保图标文件在 /public/logo.png) */}
             <img 
               src="/logo.png" 
               alt="ILINFRA Icon" 
-              className="h-12 md:h-14 w-auto object-contain mix-blend-screen drop-shadow-[0_0_8px_rgba(0,229,255,0.4)] transition-transform duration-300 group-hover:scale-110" 
+              className="h-10 md:h-12 w-auto object-contain mix-blend-screen drop-shadow-[0_0_8px_rgba(0,229,255,0.4)] transition-transform duration-300 group-hover:scale-110" 
+              onError={(e) => { e.target.style.display = 'none'; }}
             />
             
             {/* 文字渲染区域 */}
@@ -247,7 +266,7 @@ export default function App() {
 
         <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto relative z-10">
           <a href="#contact" className="bg-[#00E5FF] text-[#020617] px-8 py-4 rounded-full font-bold tracking-wide hover:bg-white transition-all flex items-center justify-center gap-2 group shadow-[0_0_20px_rgba(0,229,255,0.2)]">
-            👉 {d.hero.btnPrimary}
+            <ArrowRight className="w-5 h-5" /> {d.hero.btnPrimary}
           </a>
           <a href="#contact" className="bg-slate-900/60 backdrop-blur border border-slate-600 text-white px-8 py-4 rounded-full font-bold tracking-wide hover:bg-slate-800 transition-all flex items-center justify-center">
             {d.hero.btnSecondary}
@@ -372,8 +391,8 @@ export default function App() {
           <h2 className="text-4xl md:text-6xl font-black mb-6 tracking-tighter text-white uppercase">{d.cta.title}</h2>
           <p className="mb-10 text-lg md:text-xl font-medium text-cyan-50">{d.cta.subtitle}</p>
           
-          <a href={`https://wa.me/${d.footer.phone.split('/')[0].replace(/\D/g, '')}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 bg-[#020617] text-white px-10 py-5 rounded-full font-black text-lg tracking-wide hover:bg-white hover:text-[#020617] transition-all transform hover:scale-105 shadow-2xl">
-            👉 {d.cta.btn}
+          <a href={getWaLink()} target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 bg-[#020617] text-white px-10 py-5 rounded-full font-black text-lg tracking-wide hover:bg-white hover:text-[#020617] transition-all transform hover:scale-105 shadow-2xl">
+            <WhatsAppIcon /> {d.cta.btn}
           </a>
         </div>
       </section>
@@ -388,10 +407,11 @@ export default function App() {
                 <img 
                   src="/logo.png" 
                   alt="ILINFRA Icon" 
-                  className="h-16 md:h-20 w-auto object-contain mix-blend-screen opacity-90" 
+                  className="h-12 md:h-16 w-auto object-contain mix-blend-screen opacity-90" 
+                  onError={(e) => { e.target.style.display = 'none'; }}
                 />
                 <div className="flex flex-col border-l border-white/10 pl-5">
-                  <div className="text-3xl md:text-4xl font-black tracking-tighter uppercase text-white leading-none">
+                  <div className="text-2xl md:text-3xl font-black tracking-tighter uppercase text-white leading-none">
                     <span className="text-[#00E5FF]">IL</span>INFRA
                   </div>
                   <span className="text-slate-500 text-[0.6rem] md:text-[0.7rem] font-bold uppercase tracking-[0.4em] mt-2">
@@ -404,7 +424,7 @@ export default function App() {
             
             <div className="flex flex-col gap-3 md:text-right md:justify-end">
               <p className="text-slate-300 text-sm font-medium uppercase tracking-widest">{d.footer.location}</p>
-              <a href={`mailto:${d.footer.email.replace('📧 ', '')}`} className="text-slate-400 text-sm hover:text-[#00E5FF] transition-colors font-bold uppercase tracking-widest">{d.footer.email}</a>
+              <a href={`mailto:${(d.footer.email || "").replace('📧 ', '')}`} className="text-slate-400 text-sm hover:text-[#00E5FF] transition-colors font-bold uppercase tracking-widest">{d.footer.email}</a>
               <p className="text-slate-400 text-sm font-bold uppercase tracking-widest">{d.footer.phone}</p>
             </div>
           </div>
