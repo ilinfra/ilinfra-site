@@ -189,9 +189,14 @@ export default function App() {
       {/* 导航栏 */}
       <nav className="fixed w-full z-50 bg-[#020617]/80 backdrop-blur-xl border-b border-white/5 transition-all">
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
-          <div className="flex flex-col cursor-pointer group" onClick={() => window.scrollTo(0,0)}>
-            <img src="image_f18f1f.png" alt="ILINFRA Logo" className="h-14 md:h-16 object-contain mix-blend-screen" />
-          </div>
+      {/* 导航栏Logo 区域 */}
+<div className="flex flex-col cursor-pointer group" onClick={() => window.scrollTo(0,0)}>
+  <img 
+    src="/logo.png" 
+    alt="ILINFRA Logo" 
+    className="h-16 md:h-24 w-auto object-contain mix-blend-screen transition-transform duration-300 group-hover:scale-105 filter drop-shadow-[0_0_8px_rgba(0,229,255,0.3)]" 
+  />
+</div>
           <div className="hidden md:flex gap-8 items-center text-xs font-bold text-slate-400 tracking-wider uppercase">
             <a href="#about" className="hover:text-white transition-colors">{d.nav.about}</a>
             <a href="#services" className="hover:text-white transition-colors">{d.nav.services}</a>
