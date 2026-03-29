@@ -194,7 +194,7 @@ export default function App() {
   <img 
     src="/logo.png" 
     alt="ILINFRA Logo" 
-    className="h-16 md:h-24 w-auto object-contain mix-blend-screen transition-transform duration-300 group-hover:scale-105 filter drop-shadow-[0_0_8px_rgba(0,229,255,0.3)]" 
+    className="h-28 md:h-40 w-auto object-contain mix-blend-screen transition-transform duration-300 group-hover:scale-105 filter drop-shadow-[0_0_8px_rgba(0,229,255,0.3)]" 
   />
 </div>
           <div className="hidden md:flex gap-8 items-center text-xs font-bold text-slate-400 tracking-wider uppercase">
