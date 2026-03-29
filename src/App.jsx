@@ -372,9 +372,13 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 border-b border-slate-800 pb-12 mb-8">
             <div>
-              <div className="flex items-center leading-none mb-6">
-                <img src="/image_f18f1f.png" alt="ILINFRA Logo" className="h-20 md:h-24 object-contain mix-blend-screen" />
-              </div>
+              <div className="flex items-center leading-none mb-8">
+  <img 
+    src="/logo.png" 
+    alt="ILINFRA Logo" 
+    className="h-28 md:h-40 w-auto object-contain mix-blend-screen filter drop-shadow-[0_0_15px_rgba(0,229,255,0.2)]" 
+  />
+</div>
               <p className="text-slate-400 text-sm font-light tracking-wide">{d.footer.desc}</p>
             </div>
             
